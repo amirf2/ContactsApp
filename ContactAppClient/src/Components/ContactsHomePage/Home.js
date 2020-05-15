@@ -4,8 +4,6 @@ import { createContact, getContactsFromDB } from '../../actions'
 import SearchBar from './SearchBar'
 import ContactInfo from './ContactInfo'
 import NewContact from './NewContact'
-import axios from 'axios';
-
 
 class ContactsHomePage extends Component {
 
@@ -17,7 +15,6 @@ class ContactsHomePage extends Component {
 	}
 
 	componentDidMount(){
-		//console.log("componentDidMount");
 		this.props.getContactsFromDB()
 	}
 
