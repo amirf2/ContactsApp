@@ -50,6 +50,7 @@ const newContactReducer = (contactData = defaultNewContact, action) => {
     if (action.type === "NEW_CONTACT_FORM"){
         return action.payload;
     }
+    
     return contactData
 }
 
