@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-import { reducer as formReducer } from 'redux-form';
 
 const defaultNewContact = {
     contact: {},
@@ -11,10 +10,6 @@ const defaultNewContact = {
 
 const contactsReducer = (contacts = [], action) => {
 
-    // if (action.type === "CREATE_RANDOM_CONTACT"){
-
-    // }
-
     if (action.type === "GET_CONTACTS_FROM_DB"){
         return action.payload.contacts; 
     }
@@ -23,14 +18,6 @@ const contactsReducer = (contacts = [], action) => {
         if (action.payload.contact)
             return [...contacts,action.payload.contact];
     }
-
-    // if (action.type === "UPDATE_CONTACT"){
-
-    // }
-
-    // if (action.type === "SEARCH_CONTACTS"){
-
-    // }
 
     if (action.type === "DELETE_CONTACT"){
         const { contactID } = action.payload;
@@ -69,6 +56,5 @@ const newContactReducer = (contactData = defaultNewContact, action) => {
 
 export default combineReducers({
     contacts: contactsReducer,
-    contactData: newContactReducer,
-    form: formReducer
+    contactData: newContactReducer
 })
