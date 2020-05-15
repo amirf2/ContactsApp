@@ -107,7 +107,6 @@ export const updateContact = (id, newContact, history) => async dispatch => {
 
 export const createNewContact = (newContact, history) => async dispatch => {
     await axios.post(`http://localhost:8000/api/contacts`, newContact);
-    // dispatch(createContact(newContact));
     history.push('/contacts');
 
 }
