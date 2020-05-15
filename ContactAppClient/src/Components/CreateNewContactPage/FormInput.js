@@ -1,8 +1,11 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
 
 function FormInput(props){
     const {labelName, value , disabled} = props;
     const id = labelName.toLowerCase();
+
     return (
         <div className="new-contact-input">
             <label htmlFor={id}>{labelName}</label>
@@ -12,5 +15,8 @@ function FormInput(props){
 
 }
 
+const mapStateToProps = state => {
+	return {contactData: state.contactData};
+}
 
-export default FormInput;
+export default connect(mapStateToProps, null)(FormInput);

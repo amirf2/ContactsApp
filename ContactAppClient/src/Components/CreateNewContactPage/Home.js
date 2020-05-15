@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import { createNewContact, updateContact, getContact, newContactForm, resetForm} from '../../actions';
 import Form from './Form'
 import Avatar from './Avatar'
 import axios from 'axios';
@@ -9,51 +10,24 @@ class CreateNewContactPage extends Component {
 
     constructor(props){
         super(props);
-        this.state = {
-            contact: {},
-            avatarImage: this.getRandomAvatarImage(),
-            update: false,
-            disabled: ""
-        }
         this.checkIfEditOrNewContact();
     }
 
-    componentDidMount(){
-		this.getRandomAvatarImage();
-	}
-
     checkIfEditOrNewContact = () => {
+        const {getContact, newContactForm, resetForm} = this.props;
         const id = this.props.match.params.id; 
         if (id){
-            this.getContact(id);
+            resetForm()
+            getContact(id);
+        } else {
+            newContactForm();
         }
-    }
-
-    getContact = (id) => {
-        fetch(`http://localhost:8000/api/contacts/${id}`, {
-            method: 'GET'
-            }).then((response) => {
-            return response.json();
-            }).then((contact) => {
-                if (contact.length>0){
-                    this.setState({update: true, contact: contact[0], avatarImage: contact[0].avatar});
-                } else this.setState({disabled: "true"});
-            });
-    }
-
-    getRandomAvatarImage = () => {
-        const gender = Math.random()<0.5? "men" : "women";
-        const imageNumber = Math.floor(Math.random() * 100); 
-        return `https://randomuser.me/api/portraits/${gender}/${imageNumber}.jpg`;
-    }
-
-    updateAvatarImage = () => {
-        this.setState({avatarImage: this.getRandomAvatarImage()})
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const image = this.state.avatarImage
+        const {contactData, updateContact, createNewContact} = this.props;
+        const image = this.props.contactData.avatarImage
         const {name, phone, title} = event.target
         let phoneSplitted = phone.value.split(/[ -]/).join("");
 		const newContact = {
@@ -64,11 +38,10 @@ class CreateNewContactPage extends Component {
         }
         const validInput = this.checkIfInputIsValid(newContact);
         if (validInput){
-            if (this.state.update){
-                this.updateContact(newContact);
+            if (contactData.update){
+                updateContact(this.props.contactData.contact.id, newContact, this.props.history);
             } else {
-                this.createContact(newContact);
-
+                createNewContact(newContact, this.props.history);
             }
         } else {
             this.invalidInputAlerts(newContact);
@@ -98,40 +71,26 @@ class CreateNewContactPage extends Component {
         }
     }
 
-    updateContact = (newContact) => {
-        axios.put(`http://localhost:8000/api/contacts/${this.state.contact.id}`, newContact)
-        .then(res => {
-            this.props.history.push('/contacts')
-        }).catch(err =>{
-            console.log(err);
-        });
-    }
-
-
-    createContact = (newContact) => {
-        axios.post(`http://localhost:8000/api/contacts`, newContact)
-        .then(res => {
-            this.props.history.push('/contacts')
-        }).catch(err =>{
-            console.log(err);
-        });
-    }
 
     render(){
+
         const id = this.props.match.params.id; 
-        const formData = this.state.update? this.state.contact : []
         const error = <h3 style={{color: "red"}}> Error: Contact with id {id} doesn't exist!</h3>;
         return (
             <div className="contact-container">
                 <div className="new-contact-container">
-                    {this.state.disabled? error : undefined}
-                    <Avatar image={this.state.avatarImage} updateAvatarImage={this.updateAvatarImage} disabled={this.state.disabled} />
-                    <Form handleSubmit={this.handleSubmit} formData={formData} disabled={this.state.disabled}/>
+                    {this.props.contactData.disabled? error : undefined}
+                    <Avatar />
+                    <Form handleSubmit={this.handleSubmit}/>
                 </div>
             </div>
         )
     }
 }
 
+const mapStateToProps = state => {
+	return {contactData: state.contactData};
+}
 
-export default withRouter(CreateNewContactPage);
+
+export default connect(mapStateToProps, {createNewContact, updateContact, getContact, newContactForm, resetForm})(CreateNewContactPage);

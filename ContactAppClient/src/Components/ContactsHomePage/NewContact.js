@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {connect} from 'react-redux'
+import { createRandomContact } from '../../actions'
 
-
-function NewContact(props) {
-    const {createRandomContact} = props;
+function NewContact({createRandomContact}) {
     return (
     <div className="contact-new">
         <Link to="/contacts/new">
@@ -19,4 +19,9 @@ function NewContact(props) {
 }
 
 
-export default NewContact;
+
+export default connect(null,
+	{ createRandomContact }
+    )(NewContact);
+    
+

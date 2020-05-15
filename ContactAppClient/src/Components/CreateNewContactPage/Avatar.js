@@ -1,17 +1,25 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import { getRandomAvatarImage} from '../../actions';
 
 function Avatar(props){
-    const {image, updateAvatarImage, disabled} = props;
+    const {avatarImage, disabled} = props.contactData;
     const divDisabled = disabled? "disabledDiv": undefined;
-    const avatrImage = disabled? "/images/User-icon.png" : image;
+    const image = disabled? "/images/User-icon.png" : avatarImage;
     return (
         <div className="new-contact-avatar">
-            <img src={avatrImage} alt="loading"/>
-            <div className={divDisabled} onClick={updateAvatarImage} >
+            <img src={image} alt="loading"/>
+            <div className={divDisabled} onClick={props.getRandomAvatarImage} >
                 <button><i className="fa fa-refresh" aria-hidden="true"></i></button>
             </div>
         </div>
     )
 }
 
-export default Avatar;
+
+const mapStateToProps = state => {
+	return {contactData: state.contactData};
+}
+
+
+export default connect(mapStateToProps, {getRandomAvatarImage})(Avatar);

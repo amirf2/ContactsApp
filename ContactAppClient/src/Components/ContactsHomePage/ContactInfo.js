@@ -1,10 +1,9 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { deleteContact } from '../../actions';
 
-
-function ContactInfo(props){
-    const {name, phone, avatar, id, deleteContact} = props;
-
+function ContactInfo({name, phone, avatar, id, deleteContact}){
     return (
             <div className="contact">
                 <div className="contact-avatar">
@@ -20,11 +19,11 @@ function ContactInfo(props){
                     <button><i className="fa fa-phone" aria-hidden="true"></i></button>
                 </div>
                 <div className="contact-button-close" name={id} onClick={(event) => deleteContact(event.target.getAttribute('name'))}>
-                    <i id={id} className="fa fa-times" aria-hidden="true" onClick={(event) => deleteContact(event.target.id)}></i>
+                    <i id={id} className="fa fa-times" aria-hidden="true" onClick={(event) => {deleteContact(event.target.id)}}></i>
                 </div>
             </div>
     )
 }
 
-export default ContactInfo;
+export default connect(null,{ deleteContact })(ContactInfo);
 

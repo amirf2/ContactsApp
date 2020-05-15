@@ -1,14 +1,18 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import FormInput from './FormInput';
+import {connect} from 'react-redux';
 
 function Form(props){
-    const {handleSubmit, formData, disabled} = props;
-    const {name, phone, title} = formData;
+
+    const {handleSubmit, contactData} = props;
+    const {disabled} = contactData;
+    const {name, phone, title} = contactData.contact;
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="new-contact-inputs">
-                <FormInput labelName={"Name"} value={name} disabled={disabled}/>
+                <FormInput labelName={"Name"}  value={name}  disabled={disabled}/>
                 <FormInput labelName={"Phone"} value={phone} disabled={disabled}/>
                 <FormInput labelName={"Title"} value={title} disabled={disabled}/>
             </div>
@@ -22,5 +26,10 @@ function Form(props){
     )
 }
 
-export default Form;
 
+
+const mapStateToProps = state => {
+	return {contactData: state.contactData};
+}
+
+export default connect(mapStateToProps, null)(Form);
