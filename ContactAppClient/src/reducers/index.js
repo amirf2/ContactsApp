@@ -52,10 +52,6 @@ const newContactReducer = (contactData = defaultNewContact, action) => {
     }
 
     if (action.type === "FOUND_CONTACT"){
-        //console.log(contactData)
-       // console.log("\n\n")
-       // console.log({...contactData, update, contact, avatarImage });
-    //    console.log(action.payload)
        return action.payload
     }
 
@@ -67,7 +63,6 @@ const newContactReducer = (contactData = defaultNewContact, action) => {
     if (action.type === "NEW_CONTACT_FORM"){
         return action.payload;
     }
-    //console.log("hmm");
     return contactData
 }
 
