@@ -6,9 +6,11 @@ import { deleteContact } from '../../actions';
 function ContactInfo({name, phone, avatar, id, deleteContact}){
     return (
             <div className="contact">
-                <div className="contact-avatar">
-                    <img src={avatar} alt="loading"/>
-                </div>
+                <Link className="special-link" to={{pathname: `/contacts/${id}`}} style={{textDecoration: 'none'}}>
+                    <div className="contact-avatar">
+                        <img src={avatar} alt="loading"/>
+                    </div>
+                </Link>
                     <div className="contact-details">
                         <Link className="special-link" to={{pathname: `/contacts/${id}`}} style={{textDecoration: 'none'}}>
                             <div className="contact-name special-link">{name}</div>
