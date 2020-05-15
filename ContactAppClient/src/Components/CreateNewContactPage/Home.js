@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import { createNewContact, updateContact, getContact, newContactForm, resetForm} from '../../actions';
 import Form from './Form'
 import Avatar from './Avatar'
-import axios from 'axios';
 
 
 class CreateNewContactPage extends Component {
